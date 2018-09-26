@@ -5,6 +5,7 @@ import wifi.subprocess_compat as subprocess
 from pbkdf2 import PBKDF2
 from wifi.utils import ensure_file_exists
 from wifi.exceptions import ConnectionError
+import time
 
 
 def configuration(cell, passkey=None):
@@ -171,6 +172,7 @@ class Scheme(object):
 
         subprocess.check_output(['/sbin/ifdown', self.interface], stderr=subprocess.STDOUT)
         ifup_output = subprocess.check_output(['/sbin/ifup'] + self.as_args(), stderr=subprocess.STDOUT)
+        time.sleep(0.1)
         ifup_output = ifup_output.decode('utf-8')
 
         return self.parse_ifup_output(ifup_output)
